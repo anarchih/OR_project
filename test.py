@@ -3,7 +3,12 @@ from numpy.random import rand
 
 
 def generatePane(num=6):
-    return [int(rand() * num) for i in range(0, 30)]
+    a = [i for i in range(0, 30)]
+    for i in range(30):
+        r = int(rand() * 30)
+        a[i], a[r] = a[r], a[i]
+    return a
+    # return [int(rand() * num) for i in range(0, 30)]
 
 
 class ACO():
@@ -16,10 +21,10 @@ class ACO():
         self.start = start
         self.count = 0
         self.orgPane = generatePane()
-        self.goalPane = generatePane()
+        self.goalPane = [i for i in range(0, 30)]
         self.bestPane = None
         self.bestPath = []
-        self.bestScore = 0
+        self.bestScore = 100000000
         self.finalPane = self.orgPane.copy()
         self.ph = [[1 for i in range(30)] for j in range(30)]
         self.p = [[0 for i in range(30)] for j in range(30)]
@@ -33,7 +38,7 @@ class ACO():
             state = self.start
             self.calcProb()
             for k in range(self.m):
-                self.move(state, 30, k)
+                self.move(state, 1000, k)
                 pass
             self.update()
 
@@ -97,10 +102,10 @@ class ACO():
         for i in range(len(path) - 1):
             self.swap(path[i], path[i+1])
         score = self.score()
-        cost = (score) / 100
+        cost = 10 / (score + 1)
         for i in range(len(path) - 1):
             self.dph[k][path[i]][path[i+1]] = cost
-        if score > self.bestScore:
+        if score < self.bestScore:
             self.bestPane = self.finalPane.copy()
             self.bestScore = score
             self.bestPath.append(path)
@@ -111,13 +116,21 @@ class ACO():
     def score(self):
         score = 0
         for i in range(30):
-            if self.goalPane[i] == self.finalPane[i]:
-                score += 1
+            for j in range(i + 1, 30):
+                if self.finalPane[i] > self.finalPane[j]:
+                    score += 1
         return score
 
     def swap(self, x, y):
         self.finalPane[x], self.finalPane[y] = self.finalPane[y],\
             self.finalPane[x]
+
+
+def printPane(a):
+    for i in range(0, 5):
+        for j in range(0, 6):
+            print(str(a[i * 6 + j]).zfill(2), end=" ")
+        print("")
 
 
 def main():
@@ -135,13 +148,12 @@ def main():
         #         print(pane[i * 6 + j], end=' ')
         #     print("")
         ant.run()
-        total += ant.bestScore
-    for i in ant.bestPath:
-        for j in i:
-            print(str(j).zfill(2), end=" ")
-        print("")
-    print(total)
-    pass
+    for i in range(0, 30):
+        if ant.bestPane[i] == ant.goalPane[i]:
+            total += 1
+    printPane(ant.orgPane)
+    print("")
+    printPane(ant.bestPane)
 
 
 if __name__ == '__main__':
