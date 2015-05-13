@@ -1,6 +1,7 @@
 from queue import PriorityQueue, Queue
 from copy import deepcopy
 import time
+from puzzleGenerator import puzGen
 GOAL_4X4 = [[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11], [12, 13, 14, 15]]
 GOAL_3X3 = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
 
@@ -60,7 +61,7 @@ class Node():
         self.back = back
 
     def H(self, goal):
-        tmp = [Queue(), Queue(), Queue(), Queue()]
+        tmp = [Queue(), Queue(), Queue(), Queue(), Queue()]
         total = 0
         p = self.puzzle
         t = 0
@@ -133,26 +134,22 @@ def printPuzzle(p):
 
 
 def main():
-    then = time.time()
-    b = [[9, 6, 2, 13],
-         [8, 15, 7, 11],
-         [12, 3, 4, 1],
-         [10, 5, 0, 14]]
-    b = [[5, 1, 6],
-         [0, 3, 8],
-         [4, 2, 7]]
     b = [[0, 2, 1], [0, 1, 2], [0, 1, 2]]
     b = [[1, 2, 2],
          [0, 2, 1],
          [0, 1, 0]]
     b = [[0, 1, 1, 0], [3, 3, 1, 2], [3, 0, 2, 2], [0, 3, 1, 2]]
-    g = [[0, 1, 2, 3],
-         [0, 1, 2, 3],
-         [0, 1, 2, 3],
-         [0, 1, 2, 3]]
-    p = Puzzle(4, 4, b, (3, 3))
+    g = [[0, 1, 2, 3, 4],
+         [0, 1, 2, 3, 4],
+         [0, 1, 2, 3, 4],
+         [0, 1, 2, 3, 4],
+         [0, 1, 2, 3, 4]]
+    b = puzGen(g, 5, 5)
+    then = time.time()
+    p = Puzzle(5, 5, b, (4, 4))
     s = Solver(p, g)
     count = 0
+    printPuzzle(p)
     q = s.solve()
     while q:
         printPuzzle(q.puzzle)
