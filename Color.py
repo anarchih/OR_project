@@ -5,4 +5,4 @@ class Color():
         yellow = (255, 255, 0)
         pink = (255, 0, 255)
         purple = (128, 0, 255)
-        c = [(0, 0, 0), red, green, blue, yellow, pink, purple]
+        c = [red, green, blue, yellow, pink, purple]
