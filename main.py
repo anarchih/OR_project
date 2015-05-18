@@ -46,11 +46,14 @@ class UI():
 
     def rendering(self):
         b = self.node.puzzle.board
+        p = self.node.puzzle.pointer
         for i in range(0, self.hNum):
             for j in range(0, self.wNum):
                 color = Color.c[b[i][j]]
                 pygame.draw.circle(self.screen, color,
                                    (j * 51 + 23, i * 51 + 173), 25, )
+        pygame.draw.circle(self.screen, (255, 255, 255),
+                           (p[0] * 51 + 23, p[1] * 51 + 173), 25, 3)
         pygame.display.flip()
         pass
 
