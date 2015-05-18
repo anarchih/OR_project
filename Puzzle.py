@@ -58,6 +58,7 @@ class Node():
         self.h = self.H(goal)
         self.g = g
         self.f = self.h + self.g
+        self.next_ = None
         self.back = back
 
     def H(self, goal):
@@ -101,6 +102,7 @@ class Solver():
     def __init__(self, start, goal):
         self.start = start
         self.bestNode = None
+        self.final = None
         self.goal = goal
 
     def solve(self):
@@ -120,7 +122,17 @@ class Solver():
                     s.add(n.puzzle)
                     q.put(n)
                     if n.puzzle.solved(self.goal):
-                        return n
+                        self.final = n
+                        self.buildPath()
+                        return self.final
+
+    def buildPath(self):
+        f = self.final
+        print("building")
+        while f.back:
+            f.back.next_ = f
+            f = f.back
+        self.final = f
 
 
 def printPuzzle(p):
@@ -131,6 +143,7 @@ def printPuzzle(p):
             pass
         print("")
     print("")
+
 
 
 def main():
@@ -153,7 +166,7 @@ def main():
     q = s.solve()
     while q:
         printPuzzle(q.puzzle)
-        q = q.back
+        q = q.next_
         count += 1
     now = time.time()
     print(count - 1)
