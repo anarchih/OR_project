@@ -53,7 +53,7 @@ class UI():
                 pygame.draw.circle(self.screen, color,
                                    (j * 51 + 23, i * 51 + 173), 25, )
         pygame.draw.circle(self.screen, (255, 255, 255),
-                           (p[0] * 51 + 23, p[1] * 51 + 173), 25, 3)
+                           (p[0] * 51 + 23, p[1] * 51 + 173), 24, 3)
         pygame.display.flip()
         pass
 
