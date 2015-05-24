@@ -68,12 +68,12 @@ class Node():
         t = 0
         for i in range(p.height):
             for j in range(p.width):
-                tmp[p.board[i][j]].put(i * p.width + j)
+                tmp[p.board[i][j]].put((i, j))
 
         for i in range(p.height):
             for j in range(p.width):
                 a = tmp[goal[i][j]].get()
-                total += abs(a - j - i * p.width)
+                total += abs(a[0] - i) + abs(a[1] - j)
 
         # for i in range(p.width):
         #     for j in range(p.height):
