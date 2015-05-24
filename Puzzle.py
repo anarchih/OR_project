@@ -62,7 +62,7 @@ class Node():
         self.back = back
 
     def H(self, goal):
-        tmp = [Queue(), Queue(), Queue(), Queue(), Queue()]
+        tmp = [Queue(), Queue(), Queue(), Queue(), Queue(), Queue()]
         total = 0
         p = self.puzzle
         t = 0
@@ -111,6 +111,7 @@ class Solver():
         q.put(self.bestNode)
         s = set()
         s.add(self.start)
+        count = 0
         if self.start.solved(self.goal):
             print(self.start.board)
             return 1
@@ -121,18 +122,20 @@ class Solver():
                     n = Node(p, node.g + 1, node, self.goal)
                     s.add(n.puzzle)
                     q.put(n)
-                    if n.puzzle.solved(self.goal):
-                        self.final = n
+                    count += 1
+                    if self.bestNode.h > n.h:
+                        self.bestNode = n
+                    if n.puzzle.solved(self.goal) or count > 200000:
                         self.buildPath()
-                        return self.final
+                        return self.bestNode
 
     def buildPath(self):
-        f = self.final
+        f = self.bestNode
         print("building")
         while f.back:
             f.back.next_ = f
             f = f.back
-        self.final = f
+        self.bestNode = f
 
 
 def printPuzzle(p):
@@ -145,21 +148,16 @@ def printPuzzle(p):
     print("")
 
 
-
 def main():
-    b = [[0, 2, 1], [0, 1, 2], [0, 1, 2]]
-    b = [[1, 2, 2],
-         [0, 2, 1],
-         [0, 1, 0]]
-    b = [[0, 1, 1, 0], [3, 3, 1, 2], [3, 0, 2, 2], [0, 3, 1, 2]]
-    g = [[0, 1, 2, 3, 4],
-         [0, 1, 2, 3, 4],
-         [0, 1, 2, 3, 4],
-         [0, 1, 2, 3, 4],
-         [0, 1, 2, 3, 4]]
-    b = puzGen(g, 5, 5)
+    g = [[0, 1, 2, 3, 4, 5],
+         [0, 1, 2, 3, 4, 5],
+         [0, 1, 2, 3, 4, 5],
+         [0, 1, 2, 3, 4, 5],
+         [0, 1, 2, 3, 4, 5],
+         [0, 1, 2, 3, 4, 5]]
+    b = puzGen(g, 6, 6)
     then = time.time()
-    p = Puzzle(5, 5, b, (4, 4))
+    p = Puzzle(6, 6, b, (5, 5))
     s = Solver(p, g)
     count = 0
     printPuzzle(p)
