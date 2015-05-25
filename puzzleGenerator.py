@@ -12,7 +12,7 @@ def puzGen(goal, width, height):
     p = [int(random() * width), int(random() * height)]
     t = deepcopy(goal)
     i = 0
-    while i <= 1000 or p != [width - 1, height - 1]:
+    while i <= 3000 or p != [width - 1, height - 1]:
         a = int(random() * 4)
         if a == 0 and p[0] - 1 >= 0:
             swap(t, p, [p[0] - 1, p[1]])
