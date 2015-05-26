@@ -80,7 +80,7 @@ class Node():
         #         a = int(p.board[i][j] / p.width)
         #         b = p.board[i][j] % p.width
         #         t = abs(a - j) + abs(b - i)
-        return total * 5
+        return total * 2
 
     def __lt__(self, other):
         return self.f < other.f
@@ -123,9 +123,9 @@ class Solver():
                     s.add(n.puzzle)
                     q.put(n)
                     count += 1
-                    if self.bestNode.h > n.h:
-                        self.bestNode = n
-                    if n.puzzle.solved(self.goal) or count > 200000:
+                    if self.bestNode.h > node.h:
+                        self.bestNode = node
+                    if node.h == 0 or count > 200000:
                         self.buildPath()
                         return self.bestNode
 
@@ -149,15 +149,14 @@ def printPuzzle(p):
 
 
 def main():
-    g = [[0, 1, 2, 3, 4, 5],
-         [0, 1, 2, 3, 4, 5],
-         [0, 1, 2, 3, 4, 5],
-         [0, 1, 2, 3, 4, 5],
-         [0, 1, 2, 3, 4, 5],
-         [0, 1, 2, 3, 4, 5]]
-    b = puzGen(g, 6, 6)
+    g = [[0, 0, 0, 0, 0],
+         [1, 1, 1, 1, 1],
+         [2, 2, 2, 2, 2],
+         [3, 3, 3, 3, 3],
+         [4, 4, 4, 4, 4]]
+    b = puzGen(g, 5, 5)
     then = time.time()
-    p = Puzzle(6, 6, b, (5, 5))
+    p = Puzzle(5, 5, b, (4, 4))
     s = Solver(p, g)
     count = 0
     printPuzzle(p)
